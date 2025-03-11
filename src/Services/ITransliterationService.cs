@@ -7,11 +7,12 @@ namespace Services;
 /// </summary>
 public interface ITransliterationService
 {
-     /// <summary>
-     /// Транслитерация текста.
-     /// </summary>
-     /// <param name="text">Текст для транслитерации.</param>
-     /// <param name="transliterationSchema">Схема транслитерации.</param>
-     /// <returns>Результат транслитерации.</returns>
-     string Transliterate(string text, TransliterationSchema transliterationSchema);
+    /// <summary>
+    /// Транслитерация текста.
+    /// </summary>
+    /// <param name="text">Текст для транслитерации.</param>
+    /// <param name="transliterationSchema">Схема транслитерации.</param>
+    /// <returns>Результат транслитерации.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">Неизвестная схема транслитерации.</exception>
+    string Transliterate(string text, TransliterationSchema transliterationSchema);
 }

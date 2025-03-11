@@ -3,7 +3,7 @@ using Services.Models;
 
 namespace Services;
 
-public class TransliterationService : ITransliterationService
+internal sealed class TransliterationService : ITransliterationService
 {
     public string Transliterate(string text, TransliterationSchema transliterationSchema)
     {
