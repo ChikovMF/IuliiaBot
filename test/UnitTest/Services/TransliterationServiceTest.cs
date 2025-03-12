@@ -14,7 +14,9 @@ public sealed class TransliterationServiceTest
 
     [Theory(DisplayName = "Должен вернуть транслитерированный текст, на указанную схему.")]
     [MemberData(nameof(TransliterationTestData))]
-    public void Method(string expectedText, TransliterationSchema schema)
+    public void Transliterate_ShouldReturnTransliteratedText_AccordingToSpecifiedSchema(
+        string expectedText,
+        TransliterationSchema schema)
     {
         // Arrange
         const string text = "ёжик, чайка, щука";
@@ -24,6 +26,35 @@ public sealed class TransliterationServiceTest
 
         // Assert
         Assert.Equivalent(expectedText, result);
+    }
+
+    [Fact(DisplayName = "Должен вернуть информацию о схеме транслитерации.")]
+    public void GetSchemaInfo_ShouldReturnTransliterationSchemaInfo()
+    {
+        // Arrange
+        const TransliterationSchema schema = TransliterationSchema.YandexMoney;
+
+        // Act
+        var result = _sut.GetSchemaInfo(schema);
+
+        // Assert
+        Assert.Equivalent(TransliterationSchema.YandexMoney, result.TransliterationSchema);
+        Assert.NotNull(result.Name);
+        Assert.NotEmpty(result.Samples);
+    }
+
+    [Fact(DisplayName = "Должен вернуть информацию о всех схемах транслитерации.")]
+    public void GetSchemasInfo_ShouldReturnInfoForAllTransliterationSchemas()
+    {
+        // Arrange
+        var schemas = Enum.GetValues<TransliterationSchema>();
+
+        // Act
+        var result = _sut.GetSchemasInfo();
+
+        // Assert
+        var resultSchemas = result.Select(s => s.TransliterationSchema);
+        Assert.All(schemas, schema => Assert.Contains(schema, resultSchemas));
     }
 
     /// <summary>
