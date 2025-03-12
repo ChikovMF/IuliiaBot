@@ -12,6 +12,32 @@ internal sealed class TransliterationService : ITransliterationService
         return IuliiaTranslator.Translate(text, scheme);
     }
 
+    public TransliterationSchemaInfo GetSchemaInfo(TransliterationSchema schema)
+    {
+        var scheme = GetSchema(schema);
+
+        return new TransliterationSchemaInfo
+        {
+            Name = scheme.Name,
+            TransliterationSchema = schema,
+            Samples = scheme.Samples.Select(s => new TransliterationSchemaInfo.Sample
+            {
+                Original = s.Original,
+                Translated = s.Translated
+            }).ToList()
+        };
+    }
+
+    public IReadOnlyList<TransliterationSchemaInfo> GetSchemasInfo()
+    {
+        var schemas = Enum.GetValues<TransliterationSchema>();
+        var schemasInfo = new List<TransliterationSchemaInfo>(schemas.Length);
+
+        schemasInfo.AddRange(schemas.Select(GetSchemaInfo));
+
+        return schemasInfo;
+    }
+
     private static Scheme GetSchema(TransliterationSchema schema)
     {
         return schema switch
